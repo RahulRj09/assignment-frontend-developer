@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-// import { login } from '../../store'
+import { login } from '../store'
 import { useHistory, Redirect, Link } from 'react-router-dom'
 import '../style/form.css'
 import '../style/form1.css'
@@ -10,7 +10,7 @@ import TextError from '../utils/TextError'
 import Alert from '@material-ui/lab/Alert';
 import '../style/login.css'
 
-function Login() {
+function Login({ isAuth, login }) {
     let history = useHistory()
 
     const initialValue = {
@@ -24,11 +24,9 @@ function Login() {
 
     })
     const onSubmit = async values => {
-        // let data = await isAuthCall(values)
+        let data = await login(values)
         // localStorage.setItem("isAuth", true)
         // history.push('/home')
-
-
     }
 
     let loginStatus = localStorage.getItem("isAuth")
@@ -61,7 +59,7 @@ function Login() {
                                                                     <Field type="password" name="password" className="form-control" />
                                                                     <ErrorMessage name="password" component={TextError} />
                                                                 </div>
-                                                                {/* {
+                                                                {
 
                                                                     isAuth.error || isAuth.userData.status == false ?
                                                                         <div>
@@ -69,7 +67,7 @@ function Login() {
                                                                             <br />
                                                                         </div>
                                                                         : null
-                                                                } */}
+                                                                }
                                                                 <br />
                                                                 <div style={{ display: "flex", float: "right", display: "inline", marginTop: "-8%" }}>
                                                                     <button type='submit' className="btn btn-secondary" disabled={!formik.isValid}>Login</button>
@@ -92,4 +90,16 @@ function Login() {
     )
 }
 
-export default Login
+const mapStateToProps = (state) => {
+    return {
+        isAuth: state.login
+    }
+}
+
+const mapStateToDispatch = (dispatch) => {
+    return {
+        login: (loginDetails) => dispatch(login(loginDetails))
+    }
+}
+
+export default connect(mapStateToProps, mapStateToDispatch)(Login)
