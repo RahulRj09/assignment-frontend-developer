@@ -86,6 +86,9 @@ function Home({
     const onSubmit = async (values, { resetForm }) => {
         submitForm(values, accessToken)
         resetForm()
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000)
     }
 
     console.log(details)
