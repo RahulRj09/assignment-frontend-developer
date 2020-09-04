@@ -7,26 +7,35 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import TextError from '../utils/TextError'
 import '../style/login.css'
-import { getCategories } from '../store'
+import { getCategories, getSubCategories } from '../store'
 
 
-function Home({ categories, getCategories }) {
+function Home({ categories, getCategories, subCategories, getSubCategories }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
     let accessToken = details.result.accessToken
 
     useEffect(() => {
         getCategories(accessToken)
-    }, [getCategories])
+        getSubCategories(accessToken)
+    }, [getCategories, getSubCategories])
 
     const categoriesList = []
+    const subCategoriesList = []
 
     if (categories.loading) {
         let categoriesData = categories.categories.result
-        console.log(categoriesData)
         categoriesData.map(data => {
             categoriesList.push({ key: data.name, value: data.id })
         })
     }
+
+    if (subCategories.loading) {
+        let subCategoriesData = subCategories.subCategories.result
+        subCategoriesData.map(data => {
+            subCategoriesList.push({ key: data.name, value: data.id })
+        })
+    }
+
 
 
     const initialValue = {
@@ -34,6 +43,7 @@ function Home({ categories, getCategories }) {
         imageUrl: "",
         categoryId: "",
         subCategoryId: "",
+        topicId: "",
         startDate: "",
         endDate: ""
     }
@@ -43,6 +53,7 @@ function Home({ categories, getCategories }) {
         imageUrl: Yup.string().required("Required!"),
         categoryId: Yup.string().required("Required!"),
         subCategoryId: Yup.string().required("Required!"),
+        topicId: Yup.string().required("Required!"),
         startDate: Yup.string().required("Required!"),
         endDate: Yup.string().required("Required!"),
 
@@ -82,9 +93,9 @@ function Home({ categories, getCategories }) {
                                                                 <ErrorMessage name="imageUrl" component={TextError} />
                                                             </div>
                                                             <div className="form-group">
-                                                                <label htmlFor="categoryId">categoryId</label>
+                                                                <label htmlFor="categoryId">categories</label>
                                                                 <Field as='select' id="categoryId" name="categoryId" className="form-control">
-                                                                    <option value="" disabled selected>categoryId</option>
+                                                                    <option value="" disabled selected>category</option>
                                                                     {
                                                                         categoriesList.map(list => {
                                                                             return (
@@ -95,7 +106,23 @@ function Home({ categories, getCategories }) {
                                                                         })
                                                                     }
                                                                 </Field>
-                                                                <ErrorMessage name="backupfileslist" component={TextError} />
+                                                                <ErrorMessage name="categoryId" component={TextError} />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="subCategoryId">Sub categories</label>
+                                                                <Field as='select' id="subCategoryId" name="subCategoryId" className="form-control">
+                                                                    <option value="" disabled selected>sub category</option>
+                                                                    {
+                                                                        subCategoriesList.map(list => {
+                                                                            return (
+                                                                                <option key={list.key} value={list.value}>
+                                                                                    {list.key}
+                                                                                </option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Field>
+                                                                <ErrorMessage name="subCategoryId" component={TextError} />
                                                             </div>
                                                             <div style={{ display: "flex", float: "right", display: "inline" }}>
                                                                 <button type="submit" className="btn btn-secondary" disabled={!formik.isValid} >Submit</button>
@@ -120,13 +147,15 @@ function Home({ categories, getCategories }) {
 
 const mapStateToProps = (state) => {
     return {
-        categories: state.categories
+        categories: state.categories,
+        subCategories: state.subCategories
     }
 }
 
 const mapStateToDispatch = (dispatch) => {
     return {
-        getCategories: (token) => dispatch(getCategories(token))
+        getCategories: (token) => dispatch(getCategories(token)),
+        getSubCategories: (token) => dispatch(getSubCategories(token))
     }
 }
 
