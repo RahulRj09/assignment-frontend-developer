@@ -7,12 +7,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import TextError from '../utils/TextError'
 import '../style/login.css'
-import { getCategories, getSubCategories, getTopics } from '../store'
+import { getCategories, getSubCategories, getTopics, submitForm } from '../store'
 import DateView from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../style/date.css'
 
-function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics }) {
+function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics, submitForm }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
     let accessToken = details.result.accessToken
 
@@ -69,7 +69,7 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
 
     })
     const onSubmit = async values => {
-        console.log(values)
+        submitForm(values, accessToken)
     }
 
     if (!details) {
@@ -203,7 +203,8 @@ const mapStateToProps = (state) => {
     return {
         categories: state.categories,
         subCategories: state.subCategories,
-        topics: state.topics
+        topics: state.topics,
+        submitFormData: state.submitFormData
     }
 }
 
@@ -211,7 +212,8 @@ const mapStateToDispatch = (dispatch) => {
     return {
         getCategories: (token) => dispatch(getCategories(token)),
         getSubCategories: (token) => dispatch(getSubCategories(token)),
-        getTopics: (token) => dispatch(getTopics(token))
+        getTopics: (token) => dispatch(getTopics(token)),
+        submitForm: (payload, token) => dispatch(submitForm(payload, token))
     }
 }
 
