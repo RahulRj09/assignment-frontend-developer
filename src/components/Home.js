@@ -8,7 +8,9 @@ import * as Yup from 'yup'
 import TextError from '../utils/TextError'
 import '../style/login.css'
 import { getCategories, getSubCategories, getTopics } from '../store'
-
+import DateView from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import '../style/date.css'
 
 function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
@@ -67,7 +69,7 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
 
     })
     const onSubmit = async values => {
-
+        console.log(values)
     }
 
     if (!details) {
@@ -147,6 +149,34 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                                     }
                                                                 </Field>
                                                                 <ErrorMessage name="topicId" component={TextError} />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="startDate">Start Date</label>
+                                                                <Field name="startDate" type="date">
+                                                                    {
+                                                                        ({ form, field }) => {
+                                                                            const { setFieldValue } = form
+                                                                            const { value } = field
+                                                                            return <DateView id="startDate" className="form-control demo" {...field}
+                                                                                selected={value} onChange={val => setFieldValue("startDate", val)} />
+                                                                        }
+                                                                    }
+                                                                </Field>
+                                                                <ErrorMessage name="startDate" component={TextError} />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="endDate">End Date</label>
+                                                                <Field name="endDate" type="date">
+                                                                    {
+                                                                        ({ form, field }) => {
+                                                                            const { setFieldValue } = form
+                                                                            const { value } = field
+                                                                            return <DateView id="endDate" className="form-control demo" {...field}
+                                                                                selected={value} onChange={val => setFieldValue("endDate", val)} />
+                                                                        }
+                                                                    }
+                                                                </Field>
+                                                                <ErrorMessage name="endDate" component={TextError} />
                                                             </div>
                                                             <div style={{ display: "flex", float: "right", display: "inline" }}>
                                                                 <button type="submit" className="btn btn-secondary" disabled={!formik.isValid} >Submit</button>
