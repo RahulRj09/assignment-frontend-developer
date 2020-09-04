@@ -25,7 +25,11 @@ function Home({
     submitFormData
 }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
-    let accessToken = details.result.accessToken
+    let accessToken;
+    if (details) {
+        accessToken = details.result.accessToken
+    }
+
 
     useEffect(() => {
         getCategories(accessToken)
@@ -84,7 +88,7 @@ function Home({
         resetForm()
     }
 
-    console.log(submitFormData)
+    console.log(details)
 
     if (!details) {
         return <Redirect to='/' />
