@@ -12,6 +12,7 @@ import DateView from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../style/date.css'
 import Select from './Select'
+import Date from './Date'
 
 function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics, submitForm }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
@@ -93,12 +94,13 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                 {
                                                     formik => {
                                                         return <Form>
-                                                            <div className="form-group">
+                                                            <div class="form-row">
+                                                            <div className="form-group col-md-6">
                                                                 <label htmlFor="name">Name</label>
                                                                 <Field type="text" name="name" className="form-control" />
                                                                 <ErrorMessage name="name" component={TextError} />
                                                             </div>
-                                                            <div className="form-group">
+                                                            <div className="form-group col-md-6">
                                                                 <label htmlFor="imageUrl">Image Url</label>
                                                                 <Field name="imageUrl" className="form-control" type="text" />
                                                                 <ErrorMessage name="imageUrl" component={TextError} />
@@ -106,38 +108,13 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                             <Select title="Categories" label="categoryId" options={categoriesOptions} />
                                                             <Select title="Sub categories" label="subCategoryId" options={subCategoriesOptions} />
                                                             <Select title="Topics" label="topicId" options={topicsOptions} />
-
-                                                            <div className="form-group">
-                                                                <label htmlFor="startDate">Start Date</label>
-                                                                <Field name="startDate" type="date">
-                                                                    {
-                                                                        ({ form, field }) => {
-                                                                            const { setFieldValue } = form
-                                                                            const { value } = field
-                                                                            return <DateView id="startDate" className="form-control demo" {...field}
-                                                                                selected={value} onChange={val => setFieldValue("startDate", val)} />
-                                                                        }
-                                                                    }
-                                                                </Field>
-                                                                <ErrorMessage name="startDate" component={TextError} />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="endDate">End Date</label>
-                                                                <Field name="endDate" type="date">
-                                                                    {
-                                                                        ({ form, field }) => {
-                                                                            const { setFieldValue } = form
-                                                                            const { value } = field
-                                                                            return <DateView id="endDate" className="form-control demo" {...field}
-                                                                                selected={value} onChange={val => setFieldValue("endDate", val)} />
-                                                                        }
-                                                                    }
-                                                                </Field>
-                                                                <ErrorMessage name="endDate" component={TextError} />
+                                                            <Date label="startDate" title="Start Date" />
+                                                            <Date label="endDate" title="End Date" />                                                        
                                                             </div>
                                                             <div style={{ display: "flex", float: "right", display: "inline" }}>
                                                                 <button type="submit" className="btn btn-secondary" disabled={!formik.isValid} >Submit</button>
                                                             </div>
+                                                            
                                                         </Form>
                                                     }
                                                 }
