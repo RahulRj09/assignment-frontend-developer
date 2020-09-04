@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { login } from '../store'
-import { useHistory, Redirect, Link } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 import '../style/form.css'
 import '../style/form1.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -25,14 +25,19 @@ function Login({ isAuth, login }) {
     })
     const onSubmit = async values => {
         let data = await login(values)
-        // localStorage.setItem("isAuth", true)
-        // history.push('/home')
+        console.log(data.data)
+        if (data.status) {
+            localStorage.setItem("loginDetails", JSON.stringify(data.data))
+            history.push('/home')
+        }
     }
 
-    let loginStatus = localStorage.getItem("isAuth")
-    // if (loginStatus === "true") {
-    //     return <Redirect to='/home' />
-    // }
+    let details = JSON.parse(localStorage.getItem("loginDetails"))
+    if (details) {
+        if (details.success) {
+            return <Redirect to='/home' />
+        }
+    }
     return (
         <div>
             <section id="cover" className="min-vh-100" >
