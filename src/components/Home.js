@@ -22,28 +22,28 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
         getTopics(accessToken)
     }, [getCategories, getSubCategories, getTopics])
 
-    const categoriesList = []
-    const subCategoriesList = []
-    const topicsList = []
+    const categoriesOptions = []
+    const subCategoriesOptions = []
+    const topicsOptions = []
 
     if (categories.loading) {
         let categoriesData = categories.categories.result
         categoriesData.map(data => {
-            categoriesList.push({ key: data.name, value: data.id })
+            categoriesOptions.push({ key: data.name, value: data.id })
         })
     }
 
     if (subCategories.loading) {
         let subCategoriesData = subCategories.subCategories.result
         subCategoriesData.map(data => {
-            subCategoriesList.push({ key: data.name, value: data.id })
+            subCategoriesOptions.push({ key: data.name, value: data.id })
         })
     }
 
     if (topics.loading) {
         let topicsData = topics.topics.result
         topicsData.map(data => {
-            topicsList.push({ key: data.name, value: data.id })
+            topicsOptions.push({ key: data.name, value: data.id })
         })
     }
 
@@ -107,7 +107,7 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                                 <Field as='select' id="categoryId" name="categoryId" className="form-control">
                                                                     <option value="" disabled selected>category</option>
                                                                     {
-                                                                        categoriesList.map(list => {
+                                                                        categoriesOptions.map(list => {
                                                                             return (
                                                                                 <option key={list.key} value={list.value}>
                                                                                     {list.key}
@@ -123,7 +123,7 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                                 <Field as='select' id="subCategoryId" name="subCategoryId" className="form-control">
                                                                     <option value="" disabled selected>sub category</option>
                                                                     {
-                                                                        subCategoriesList.map(list => {
+                                                                        subCategoriesOptions.map(list => {
                                                                             return (
                                                                                 <option key={list.key} value={list.value}>
                                                                                     {list.key}
@@ -139,7 +139,7 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                                 <Field as='select' id="topicId" name="topicId" className="form-control">
                                                                     <option value="" disabled selected>Topics</option>
                                                                     {
-                                                                        topicsList.map(list => {
+                                                                        topicsOptions.map(list => {
                                                                             return (
                                                                                 <option key={list.key} value={list.value}>
                                                                                     {list.key}
