@@ -7,20 +7,22 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import TextError from '../utils/TextError'
 import '../style/login.css'
-import { getCategories, getSubCategories } from '../store'
+import { getCategories, getSubCategories, getTopics } from '../store'
 
 
-function Home({ categories, getCategories, subCategories, getSubCategories }) {
+function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
     let accessToken = details.result.accessToken
 
     useEffect(() => {
         getCategories(accessToken)
         getSubCategories(accessToken)
-    }, [getCategories, getSubCategories])
+        getTopics(accessToken)
+    }, [getCategories, getSubCategories, getTopics])
 
     const categoriesList = []
     const subCategoriesList = []
+    const topicsList = []
 
     if (categories.loading) {
         let categoriesData = categories.categories.result
@@ -36,6 +38,12 @@ function Home({ categories, getCategories, subCategories, getSubCategories }) {
         })
     }
 
+    if (topics.loading) {
+        let topicsData = topics.topics.result
+        topicsData.map(data => {
+            topicsList.push({ key: data.name, value: data.id })
+        })
+    }
 
 
     const initialValue = {
@@ -124,6 +132,22 @@ function Home({ categories, getCategories, subCategories, getSubCategories }) {
                                                                 </Field>
                                                                 <ErrorMessage name="subCategoryId" component={TextError} />
                                                             </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="topicId">Topics</label>
+                                                                <Field as='select' id="topicId" name="topicId" className="form-control">
+                                                                    <option value="" disabled selected>Topics</option>
+                                                                    {
+                                                                        topicsList.map(list => {
+                                                                            return (
+                                                                                <option key={list.key} value={list.value}>
+                                                                                    {list.key}
+                                                                                </option>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Field>
+                                                                <ErrorMessage name="topicId" component={TextError} />
+                                                            </div>
                                                             <div style={{ display: "flex", float: "right", display: "inline" }}>
                                                                 <button type="submit" className="btn btn-secondary" disabled={!formik.isValid} >Submit</button>
                                                             </div>
@@ -148,14 +172,16 @@ function Home({ categories, getCategories, subCategories, getSubCategories }) {
 const mapStateToProps = (state) => {
     return {
         categories: state.categories,
-        subCategories: state.subCategories
+        subCategories: state.subCategories,
+        topics: state.topics
     }
 }
 
 const mapStateToDispatch = (dispatch) => {
     return {
         getCategories: (token) => dispatch(getCategories(token)),
-        getSubCategories: (token) => dispatch(getSubCategories(token))
+        getSubCategories: (token) => dispatch(getSubCategories(token)),
+        getTopics: (token) => dispatch(getTopics(token))
     }
 }
 

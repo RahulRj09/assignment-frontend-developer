@@ -1,33 +1,33 @@
 import {
-    CATEGORIES_REQUEST,
-    CATEGORIES_SUCCESS,
-    CATEGORIES_FAILURE
-} from './categoriesTypes'
+    TOPICS_REQUEST,
+    TOPICS_SUCCESS,
+    TOPICS_FAILURE
+} from './topicsTypes'
 
 
 const initialState = {
     loading: false,
-    categories: {},
+    topics: {},
     error: ""
 }
 
-const categoriesReducer = (state = initialState, action) => {
+const topicsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case CATEGORIES_REQUEST:
+        case TOPICS_REQUEST:
             return {
                 ...state,
                 loading: false
             }
-        case CATEGORIES_SUCCESS:
+        case TOPICS_SUCCESS:
             return {
                 loading: true,
-                categories: action.payload,
+                topics: action.payload,
                 error: ''
             }
-        case CATEGORIES_FAILURE:
+        case TOPICS_FAILURE:
             return {
                 loading: false,
-                categories: {},
+                topics: {},
                 error: action.payload
             }
         default:
@@ -36,5 +36,4 @@ const categoriesReducer = (state = initialState, action) => {
 }
 
 
-
-export default categoriesReducer
+export default topicsReducer
