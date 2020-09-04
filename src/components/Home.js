@@ -11,6 +11,7 @@ import { getCategories, getSubCategories, getTopics, submitForm } from '../store
 import DateView from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import '../style/date.css'
+import Select from './Select'
 
 function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics, submitForm }) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
@@ -102,54 +103,10 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                                 <Field name="imageUrl" className="form-control" type="text" />
                                                                 <ErrorMessage name="imageUrl" component={TextError} />
                                                             </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="categoryId">categories</label>
-                                                                <Field as='select' id="categoryId" name="categoryId" className="form-control">
-                                                                    <option value="" disabled selected>category</option>
-                                                                    {
-                                                                        categoriesOptions.map(list => {
-                                                                            return (
-                                                                                <option key={list.key} value={list.value}>
-                                                                                    {list.key}
-                                                                                </option>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </Field>
-                                                                <ErrorMessage name="categoryId" component={TextError} />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="subCategoryId">Sub categories</label>
-                                                                <Field as='select' id="subCategoryId" name="subCategoryId" className="form-control">
-                                                                    <option value="" disabled selected>sub category</option>
-                                                                    {
-                                                                        subCategoriesOptions.map(list => {
-                                                                            return (
-                                                                                <option key={list.key} value={list.value}>
-                                                                                    {list.key}
-                                                                                </option>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </Field>
-                                                                <ErrorMessage name="subCategoryId" component={TextError} />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="topicId">Topics</label>
-                                                                <Field as='select' id="topicId" name="topicId" className="form-control">
-                                                                    <option value="" disabled selected>Topics</option>
-                                                                    {
-                                                                        topicsOptions.map(list => {
-                                                                            return (
-                                                                                <option key={list.key} value={list.value}>
-                                                                                    {list.key}
-                                                                                </option>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </Field>
-                                                                <ErrorMessage name="topicId" component={TextError} />
-                                                            </div>
+                                                            <Select title="Categories" label="categoryId" options={categoriesOptions} />
+                                                            <Select title="Sub categories" label="subCategoryId" options={subCategoriesOptions} />
+                                                            <Select title="Topics" label="topicId" options={topicsOptions} />
+
                                                             <div className="form-group">
                                                                 <label htmlFor="startDate">Start Date</label>
                                                                 <Field name="startDate" type="date">
