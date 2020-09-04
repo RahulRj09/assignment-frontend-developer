@@ -14,7 +14,16 @@ import '../style/date.css'
 import Select from './Select'
 import Date from './Date'
 
-function Home({ categories, getCategories, subCategories, getSubCategories, topics, getTopics, submitForm }) {
+function Home({
+    categories,
+    getCategories,
+    subCategories,
+    getSubCategories,
+    topics,
+    getTopics,
+    submitForm,
+    submitFormData
+}) {
     let details = JSON.parse(localStorage.getItem("loginDetails"))
     let accessToken = details.result.accessToken
 
@@ -70,9 +79,12 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
         endDate: Yup.string().required("Required!"),
 
     })
-    const onSubmit = async values => {
+    const onSubmit = async (values, { resetForm }) => {
         submitForm(values, accessToken)
+        resetForm()
     }
+
+    console.log(submitFormData)
 
     if (!details) {
         return <Redirect to='/' />
@@ -95,26 +107,42 @@ function Home({ categories, getCategories, subCategories, getSubCategories, topi
                                                     formik => {
                                                         return <Form>
                                                             <div class="form-row">
-                                                            <div className="form-group col-md-6">
-                                                                <label htmlFor="name">Name</label>
-                                                                <Field type="text" name="name" className="form-control" />
-                                                                <ErrorMessage name="name" component={TextError} />
+                                                                <div className="form-group col-md-6">
+                                                                    <label htmlFor="name">Name</label>
+                                                                    <Field type="text" name="name" className="form-control" />
+                                                                    <ErrorMessage name="name" component={TextError} />
+                                                                </div>
+                                                                <div className="form-group col-md-6">
+                                                                    <label htmlFor="imageUrl">Image Url</label>
+                                                                    <Field name="imageUrl" className="form-control" type="text" />
+                                                                    <ErrorMessage name="imageUrl" component={TextError} />
+                                                                </div>
+                                                                <Select title="Categories" label="categoryId" options={categoriesOptions} />
+                                                                <Select title="Sub categories" label="subCategoryId" options={subCategoriesOptions} />
+                                                                <Select title="Topics" label="topicId" options={topicsOptions} />
+                                                                <Date label="startDate" title="Start Date" />
+                                                                <Date label="endDate" title="End Date" />
                                                             </div>
-                                                            <div className="form-group col-md-6">
-                                                                <label htmlFor="imageUrl">Image Url</label>
-                                                                <Field name="imageUrl" className="form-control" type="text" />
-                                                                <ErrorMessage name="imageUrl" component={TextError} />
-                                                            </div>
-                                                            <Select title="Categories" label="categoryId" options={categoriesOptions} />
-                                                            <Select title="Sub categories" label="subCategoryId" options={subCategoriesOptions} />
-                                                            <Select title="Topics" label="topicId" options={topicsOptions} />
-                                                            <Date label="startDate" title="Start Date" />
-                                                            <Date label="endDate" title="End Date" />                                                        
-                                                            </div>
+                                                            {
+                                                                submitFormData.loading ? <div className="alert alert-success alert-dismissible fade show" role="alert">
+                                                                    <span class="help-block">Form submitted successfully</span>
+                                                                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div> : null
+                                                            }
+                                                            {
+                                                                submitFormData.error ? <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                                                                    <span class="help-block">{submitFormData.error}</span>
+                                                                    <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div> : null
+                                                            }
                                                             <div style={{ display: "flex", float: "right", display: "inline" }}>
                                                                 <button type="submit" className="btn btn-secondary" disabled={!formik.isValid} >Submit</button>
                                                             </div>
-                                                            
+
                                                         </Form>
                                                     }
                                                 }

@@ -34,7 +34,6 @@ const submitForm = (payload, token) => {
         dispatch(submitFormRequest())
         let url = `http://18.220.240.163:8080/rest/admin/matches`
         axios.post(url, payload, config).then(response => {
-            console.log(response.data)
             dispatch(submitFormSuccess(response.data))
         }).catch(err => {
             console.log(err.message)

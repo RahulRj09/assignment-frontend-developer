@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
     categories: categoriesReducer,
     subCategories: subCategoriesReducer,
     topics: topicsReducer,
-    submitFormData: subCategoriesReducer
+    submitFormData: submitFormReducer
 })
 
 export default rootReducer
